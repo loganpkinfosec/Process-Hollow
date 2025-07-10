@@ -1,7 +1,6 @@
 function LookupFunc {
     Param ($moduleName, $functionName)
 
-    # Locate the 'UnsafeNativeMethods' type inside System.dll
     $assem = ([AppDomain]::CurrentDomain.GetAssemblies() | 
         Where-Object { 
             $_.GlobalAssemblyCache -and 
@@ -9,7 +8,6 @@ function LookupFunc {
         }
     ).GetType('Microsoft.Win32.UnsafeNativeMethods')
 
-    # Explicitly get the (string) overload for GetModuleHandle
     $getModHandle = $assem.GetMethod(
         'GetModuleHandle',
         [System.Reflection.BindingFlags] 'Public, Static, NonPublic',
@@ -18,10 +16,8 @@ function LookupFunc {
         $null
     )
 
-    # Invoke GetModuleHandle to get the module base
     $hModule = $getModHandle.Invoke($null, @($moduleName))
 
-    # Explicitly get the (IntPtr, string) overload for GetProcAddress
     $getProcAddr = $assem.GetMethod(
         'GetProcAddress',
         [System.Reflection.BindingFlags] 'Public, Static, NonPublic',
@@ -30,7 +26,6 @@ function LookupFunc {
         $null
     )
 
-    # Invoke GetProcAddress to get function address
     return $getProcAddr.Invoke($null, @($hModule, $functionName))
 }
 

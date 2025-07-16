@@ -393,38 +393,7 @@ Below are starting points for blue teams who want to detect or prevent these tec
 
 ---
 
-## Appendix A – PushAD / PushFD Refresher (x86)
 
-While most of the above lab is x64‑oriented, here’s a quick refresher from our earlier discussion.
-
-### `PUSHAD` (x86)
-
-Pushes 8 general‑purpose registers in this order: `EAX, ECX, EDX, EBX, ESP(original), EBP, ESI, EDI`.
-
-### `POPAD` (x86)
-
-Restores in reverse order **except ESP is skipped**: pops into `EDI, ESI, EBP, (discard), EBX, EDX, ECX, EAX`.
-
-### `PUSHFD` / `POPFD`
-
-Save/restore full 32‑bit `EFLAGS` to/from the stack.
-
-**Stack Illustration:** If ESP was `0x1000` before `PUSHAD`:
-
-```
-ESP-4  = EAX
-ESP-8  = ECX
-ESP-12 = EDX
-ESP-16 = EBX
-ESP-20 = original ESP
-ESP-24 = EBP
-ESP-28 = ESI
-ESP-32 = EDI   <-- deepest pushed
-```
-
-`POPAD` unwinds that region.
-
-> Not available in x64; push/pop required per register.
 
 ---
 
@@ -446,4 +415,3 @@ Choose one appropriate for dual‑use research (e.g., MIT w/ Responsible Use Cla
 
 ---
 
-**Stay safe, stay legal, and happy researching.**
